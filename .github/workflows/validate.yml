@@ -1,0 +1,80 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  shell:
+    name: Shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Syntax check every script
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            bash -n "$f" || { echo "::error file=$f::bash syntax error"; fail=1; }
+          done < <(find scripts -name '*.sh')
+          exit $fail
+
+      - name: Shellcheck
+        run: shellcheck -S warning $(find scripts -name '*.sh') || true
+
+  terraform:
+    name: Terraform module
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Format check
+        run: terraform -chdir=terraform/state-backend fmt -check -diff
+
+      - name: Validate
+        run: |
+          terraform -chdir=terraform/state-backend init -backend=false
+          terraform -chdir=terraform/state-backend validate
+
+  policies:
+    name: IAM policy JSON
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse policy documents
+        run: |
+          for f in files/policies/*.json; do
+            echo "checking $f"
+            jq -e '.Version and (.Statement | length > 0)' "$f" > /dev/null
+          done
+
+  structure:
+    name: Lab structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Every task script referenced in tasks.hcl exists
+        run: |
+          fail=0
+          while IFS= read -r p; do
+            [ -f "$p" ] || { echo "::error::missing script $p"; fail=1; }
+          done < <(grep -ohE 'scripts/[a-zA-Z0-9_/.-]+\.sh' ./*.hcl | sort -u)
+          exit $fail
+
+      - name: Every page markdown file exists
+        run: |
+          fail=0
+          while IFS= read -r p; do
+            [ -f "$p" ] || { echo "::error::missing file $p"; fail=1; }
+          done < <(grep -ohE '(instructions|notes)/[a-zA-Z0-9_/.-]+\.md' ./*.hcl | sort -u)
+          exit $fail

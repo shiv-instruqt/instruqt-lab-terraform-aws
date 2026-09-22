@@ -32,7 +32,17 @@ resource "aws_account" "lab" {
     ManagedBy   = "Instruqt"
   }
 
+  # The validator requires at least one managed policy OR an inline IAM policy.
+  # We set both: managed policies give the broad grants, and the inline policy
+  # is kept for documentation of exactly what the lab needs. The SCP below is
+  # the real ceiling.
   user "student" {
+    managed_policies = [
+      "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+      "arn:aws:iam::aws:policy/AmazonVPCFullAccess",
+      "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+    ]
+
     iam_policy = file("./files/policies/student-policy.json")
   }
 

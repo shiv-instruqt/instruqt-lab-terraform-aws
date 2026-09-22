@@ -18,7 +18,7 @@ resource "lab" "terraform_aws_fundamentals" {
   layout = resource.layout.workbench
 
   settings {
-    theme = "modern_dark"
+    theme = "modern-dark"
 
     timelimit {
       duration   = "2h"

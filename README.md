@@ -53,6 +53,33 @@ deploy; run it yourself first with:
 instruqt lab validate
 ```
 
+### If validation says files "do not exist"
+
+If you see a wall of errors like `page file "instructions/01-welcome.md" does
+not exist` or `script file "scripts/task/.../check_*.sh" not found` while the
+root `.hcl` files validate fine, the HCL is not the problem — the
+subdirectories did not reach the branch Instruqt is reading.
+
+Check what the branch actually contains:
+
+```bash
+git ls-files | wc -l          # should be 60
+git ls-files instructions notes scripts files
+git branch --show-current     # must match the lab's Ref in the UI
+```
+
+Two common causes: the lab's **Ref** in the Instruqt UI points at a branch
+that only has the root files, or the repo was populated by copying individual
+files rather than the whole tree. Push the full tree to the branch the lab is
+configured to read:
+
+```bash
+git add -A && git commit -m "Add lab content" && git push origin HEAD
+```
+
+Also confirm the lab's **Path** in the UI is `/` and that the `.hcl` files sit
+at the repository root, not inside a subfolder.
+
 ---
 
 ## Repository layout

@@ -1,0 +1,26 @@
+# Renamed to .gitignore when your workspace is created.
+
+# Local .terraform directories and provider binaries
+**/.terraform/*
+
+# State files - never commit these
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Variable files that usually hold secrets
+*.tfvars
+*.tfvars.json
+
+# CLI configuration and plan output
+.terraformrc
+terraform.rc
+tfplan
+*.tfplan
+
+# Keep the dependency lock file - it belongs in version control
+!.terraform.lock.hcl

@@ -1,0 +1,94 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyEverythingOutsideLabRegion",
+      "Effect": "Deny",
+      "NotAction": [
+        "iam:*",
+        "sts:*",
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation",
+        "organizations:Describe*",
+        "organizations:List*",
+        "support:*",
+        "health:*",
+        "budgets:*",
+        "ce:*",
+        "cloudfront:*",
+        "route53:*",
+        "waf:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": "us-east-1"
+        }
+      }
+    },
+    {
+      "Sid": "NoComputeInstancesInThisLab",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:PurchaseReservedInstancesOffering",
+        "ec2:CreateCapacityReservation",
+        "ec2:AcceptReservedInstancesExchangeQuote"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NoExpensiveManagedServices",
+      "Effect": "Deny",
+      "Action": [
+        "eks:*",
+        "ecs:*",
+        "rds:*",
+        "redshift:*",
+        "elasticache:*",
+        "sagemaker:*",
+        "bedrock:*",
+        "emr:*",
+        "es:*",
+        "opensearch:*",
+        "elasticmapreduce:*",
+        "kafka:*",
+        "transfer:*",
+        "directconnect:*",
+        "workspaces:*",
+        "appstream:*",
+        "outposts:*",
+        "snowball:*",
+        "braket:*",
+        "ec2:CreateNatGateway",
+        "ec2:AllocateAddress",
+        "ec2:CreateVpnConnection",
+        "ec2:CreateClientVpnEndpoint",
+        "elasticloadbalancing:CreateLoadBalancer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtectTheSandboxItself",
+      "Effect": "Deny",
+      "Action": [
+        "organizations:*",
+        "account:*",
+        "iam:CreateUser",
+        "iam:DeleteUser",
+        "iam:CreateAccessKey",
+        "iam:DeleteAccessKey",
+        "iam:CreateLoginProfile",
+        "iam:UpdateLoginProfile",
+        "iam:AttachUserPolicy",
+        "iam:PutUserPolicy",
+        "iam:CreateSAMLProvider",
+        "iam:CreateOpenIDConnectProvider",
+        "cloudtrail:StopLogging",
+        "cloudtrail:DeleteTrail",
+        "guardduty:DeleteDetector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
