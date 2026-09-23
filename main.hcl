@@ -7,14 +7,6 @@ resource "lab" "terraform_aws_fundamentals" {
   title       = "Terraform on AWS: From Zero to Apply"
   description = "Write Terraform from scratch and use it to create real AWS infrastructure. You will declare a provider, run init, read a plan, apply an S3 bucket and a VPC, refactor with variables and outputs, move state to an S3 backend, and destroy it all cleanly."
 
-  tags = [
-    "terraform",
-    "aws",
-    "infrastructure-as-code",
-    "devops",
-    "beginner"
-  ]
-
   layout = resource.layout.workbench
 
   settings {

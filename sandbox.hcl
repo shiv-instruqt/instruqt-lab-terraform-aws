@@ -71,8 +71,8 @@ resource "terraform" "state_backend" {
   }
 
   environment = {
-    AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-    AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+    AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+    AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
     AWS_DEFAULT_REGION    = variable.aws_region
     AWS_REGION            = variable.aws_region
   }
@@ -122,13 +122,12 @@ resource "container" "workstation" {
   environment = {
     # AWS credentials for the student user. Terraform and the AWS CLI both
     # pick these up automatically - no `aws configure` needed.
-    AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-    AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+    AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+    AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
     AWS_DEFAULT_REGION    = variable.aws_region
     AWS_REGION            = variable.aws_region
     AWS_PAGER             = ""
     AWS_ACCOUNT_ID        = resource.aws_account.lab.account_id
-
     # Lab-specific values the instructions and check scripts rely on.
     LAB_SUFFIX      = resource.random_id.lab.hex
     LAB_BUCKET      = "tf-lab-${resource.random_id.lab.hex}"
@@ -136,7 +135,6 @@ resource "container" "workstation" {
     TF_STATE_BUCKET = variable.enable_remote_state ? resource.terraform.state_backend.output.bucket_name : ""
     TF_VERSION      = variable.terraform_version
     WORKSPACE       = variable.workspace_dir
-
     DEBIAN_FRONTEND = "noninteractive"
   }
 }
@@ -148,8 +146,8 @@ resource "exec" "install_tooling" {
   timeout = "600s"
 
   environment = {
-    TF_VERSION      = variable.terraform_version
-    WORKSPACE       = variable.workspace_dir
-    DEBIAN_FRONTEND = "noninteractive"
+    "TF_VERSION"      = variable.terraform_version
+    "WORKSPACE"       = variable.workspace_dir
+    "DEBIAN_FRONTEND" = "noninteractive"
   }
 }

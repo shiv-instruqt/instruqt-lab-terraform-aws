@@ -19,8 +19,8 @@ resource "task" "verify_environment" {
     timeout           = "60s"
 
     environment = {
-      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
       AWS_DEFAULT_REGION    = variable.aws_region
       AWS_PAGER             = ""
       WORKSPACE             = variable.workspace_dir
@@ -113,8 +113,8 @@ resource "task" "init_and_plan" {
     timeout           = "180s"
 
     environment = {
-      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
       AWS_DEFAULT_REGION    = variable.aws_region
       AWS_PAGER             = ""
       WORKSPACE             = variable.workspace_dir
@@ -161,8 +161,8 @@ resource "task" "apply_infra" {
     timeout           = "180s"
 
     environment = {
-      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
       AWS_DEFAULT_REGION    = variable.aws_region
       AWS_PAGER             = ""
       WORKSPACE             = variable.workspace_dir
@@ -209,8 +209,8 @@ resource "task" "variables_and_outputs" {
     timeout           = "240s"
 
     environment = {
-      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
       AWS_DEFAULT_REGION    = variable.aws_region
       AWS_PAGER             = ""
       WORKSPACE             = variable.workspace_dir
@@ -270,8 +270,8 @@ resource "task" "remote_state" {
     timeout           = "240s"
 
     environment = {
-      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
       AWS_DEFAULT_REGION    = variable.aws_region
       AWS_PAGER             = ""
       WORKSPACE             = variable.workspace_dir
@@ -318,8 +318,8 @@ resource "task" "cleanup" {
     timeout           = "300s"
 
     environment = {
-      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user.0.access_key_id
-      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user.0.secret_access_key
+      AWS_ACCESS_KEY_ID     = resource.aws_account.lab.user[0].access_key_id
+      AWS_SECRET_ACCESS_KEY = resource.aws_account.lab.user[0].secret_access_key
       AWS_DEFAULT_REGION    = variable.aws_region
       AWS_PAGER             = ""
       WORKSPACE             = variable.workspace_dir
